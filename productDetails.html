@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<head>
+    <title>Product Details</title>
+    <link rel="stylesheet" href="Style/productDetails.css">
+</head>
+<body onload="load()">
+    <script src="https://www.gstatic.com/firebasejs/3.1.0/firebase.js"></script>
+        <script>
+            // Your web app's Firebase configuration
+            var firebaseConfig = {
+              apiKey: "AIzaSyDix4ZivfhjsOqJhCrAWnMof_srg8VRk5U",
+              authDomain: "ecommerce-c8c57.firebaseapp.com",
+              databaseURL: "https://ecommerce-c8c57.firebaseio.com",
+              projectId: "ecommerce-c8c57",
+              storageBucket: "ecommerce-c8c57.appspot.com",
+              messagingSenderId: "193435853562",
+              appId: "1:193435853562:web:5b471e8de42e33ec485f43"
+            };
+            // Initialize Firebase
+            firebase.initializeApp(firebaseConfig);
+</script>
+    <script>
+        var queryString = decodeURIComponent(window.location.search);
+queryString = queryString.substring(1);
+var queries = queryString.split("&");
+var no=queries[0];
+var pid=queries[1];
+var name,image,desc,price,category,admin;
+var d=new Date();
+                
+firebase.database().ref("Products/"+pid).once("value").then(function (snapshot)
+               {
+                admin=snapshot.child('Admin').val();
+                    name=snapshot.child('pname').val();
+                    image=snapshot.child('image').val();
+                    desc=snapshot.child('description').val();
+                    price=snapshot.child('price').val();
+                    category=snapshot.child('category').val();
+                   document.getElementById('productDetails_image').src=image;
+                   document.getElementById('productDetails_para').innerHTML="<span class='heading3'>Name :</span> "+name+"<br>"+
+                   "<span class='heading3'>Category :</span> "+category+"<br>"+
+                   "<span class='heading3'>Price :</span> ₹"+price+"<br>"+
+                   "<span class='heading3'>Description :</span> "+desc+"<br>";
+               });
+function allProduct()
+{
+    window.location.href="buyerMain.html?"+no;
+}
+function myCart()
+{
+    window.location.href="myCart.html?"+no;
+}
+function myOrders()
+{
+    window.location.href="myOrders.html?"+no;
+}
+function logOut()
+{
+    window.location.href="index.html";
+}
+function load()
+{
+document.getElementById('all_products').style.backgroundColor='rgb(199, 66, 66)';
+}
+function addToCart()
+{
+    var date=d.getDate()+" "+d.getMonth()+","+d.getFullYear();
+                var time=d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
+    firebase.database().ref("Cart List/"+no+"/"+pid).set(
+               {
+                admin:admin,
+                pid:pid,
+                discount:"0",
+                pname:name,
+                image:image,
+                price:price,
+                quantity:"1",
+                date:date,
+                time:time
+            });
+            alert("Successfully added to CART");
+}
+
+    </script>
+    <h1 id="buyer_heading1">E-Commerce</h1>
+    <div id="buyer_div1">
+        <div id="all_products" class="buyer_menu" onclick="allProduct()"> All Product</div>
+        <div id="my_cart" class="buyer_menu" onclick="myCart()"> My Cart</div>
+        <div id="my_orders" class="buyer_menu" onclick="myOrders()"> My Orders</div>
+        <div id="logout" class="buyer_menu" onclick="logOut()">LogOut</div>
+    </div>
+    <div id="buyer_div">
+       
+        <div id="buyer_div2">
+        <div id="productDetails_div2">
+           <div id="productDetails_inner1">
+               <img id="productDetails_image" src=""><br>
+               <button id="add_to_cart" onclick="addToCart()">ADD TO CART</button>
+           </div>
+           <div id="productDetails_inner2">
+               <p id="productDetails_para"></p>
+               <p id="productDetails_para"></p>
+               <p id="productDetails_para"></p>
+               
+           </div>
+        </div>
+    </div>
+    </div>
+</body>
+</html>

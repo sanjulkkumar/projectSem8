@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<head>
+    <title>My Cart</title>
+    <link rel="stylesheet" href="Style/myCart.css">
+</head>
+<body onload="load()">
+    <script src="https://www.gstatic.com/firebasejs/3.1.0/firebase.js"></script>
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+          apiKey: "AIzaSyDix4ZivfhjsOqJhCrAWnMof_srg8VRk5U",
+          authDomain: "ecommerce-c8c57.firebaseapp.com",
+          databaseURL: "https://ecommerce-c8c57.firebaseio.com",
+          projectId: "ecommerce-c8c57",
+          storageBucket: "ecommerce-c8c57.appspot.com",
+          messagingSenderId: "193435853562",
+          appId: "1:193435853562:web:5b471e8de42e33ec485f43"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+</script>
+    <script>
+        var queryString = decodeURIComponent(window.location.search);
+queryString = queryString.substring(1);
+var queries = queryString.split("&");
+var no=queries[0];
+
+function allProduct()
+{
+    window.location.href="buyerMain.html?"+no;
+}
+function myCart()
+{
+    window.location.href="myCart.html?"+no;
+}
+function myOrders()
+{
+    window.location.href="myOrders.html?"+no;
+}
+function logOut()
+{
+    window.location.href="index.html";
+}
+function removeFromCart(pid)
+{
+    firebase.database().ref("Cart List/"+no+"/"+pid).remove();
+    window.location.href="myCart.html?"+no;
+}
+function buy()
+{
+        
+    window.location.href="buyDetails.html?"+no;           
+}
+function load()
+{
+    
+document.getElementById('my_cart').style.backgroundColor='rgb(199, 66, 66)';
+}
+var totalPrice=0;
+firebase.database().ref("Cart List/"+no).once("value").then(function (snapshot)
+               {
+                   
+                snapshot.forEach((element) => {
+                    document.getElementById('mycart_buy').disabled=false;
+                    var pname=element.child('pname').val();
+                    var price=element.child('price').val();
+                    totalPrice+=parseInt(price,10);
+                    var pid=element.child('pid').val();
+                    var image=element.child('image').val();
+                    var e=document.createElement('img');
+                    e.setAttribute('class','mycart_image');
+                    e.src=image;
+                    var e2=document.createElement('p');
+                    e2.setAttribute('class','mycart_para');
+                    e2.innerHTML="Name : "+pname+"<br>"+"Price : ₹"+price;
+                    var e3=document.createElement('div');
+                    e3.setAttribute('class','mycart_div');
+                    e3.appendChild(e);
+                    e3.appendChild(e2);
+                    var e4=document.createElement('button');
+                    e4.setAttribute('class','mycart_button');
+                    e4.innerHTML="Remove from cart";
+                    e4.onclick=function()
+                    {
+                        removeFromCart(pid);
+                    }
+                    e3.appendChild(e4);
+                    document.getElementById('buyer_div2').appendChild(e3);
+                    document.getElementById('total_price').innerHTML="Total Price : ₹"+totalPrice;
+                });
+                
+                
+                
+               });
+              
+            
+    
+    </script>
+    <h1 id="buyer_heading1">E-Commerce</h1>
+    <div id="buyer_div1">
+        <div id="all_products" class="buyer_menu" onclick="allProduct()"> All Product</div>
+        <div id="my_cart" class="buyer_menu" onclick="myCart()"> My Cart</div>
+        <div id="my_orders" class="buyer_menu" onclick="myOrders()"> My Orders</div>
+        <div id="logout" class="buyer_menu" onclick="logOut()">LogOut</div>
+    </div>
+    <div id="buyer_div">
+        
+        <div id="buyer_div2">
+            <div id="total_price">Total Price : ₹0</div>
+            <button id="mycart_buy" onclick="buy()" disabled >BUY</button>
+            
+        </div>
+    </div>
+</body>
+</html>

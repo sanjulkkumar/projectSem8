@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<head>
+    <title>BUY Details</title>
+    <link rel="stylesheet" href="Style/buyDetails.css">
+</head>
+<body onload="load()">
+    <script src="https://www.gstatic.com/firebasejs/3.1.0/firebase.js"></script>
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+          apiKey: "AIzaSyDix4ZivfhjsOqJhCrAWnMof_srg8VRk5U",
+          authDomain: "ecommerce-c8c57.firebaseapp.com",
+          databaseURL: "https://ecommerce-c8c57.firebaseio.com",
+          projectId: "ecommerce-c8c57",
+          storageBucket: "ecommerce-c8c57.appspot.com",
+          messagingSenderId: "193435853562",
+          appId: "1:193435853562:web:5b471e8de42e33ec485f43"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+      </script>
+    <script>
+        var queryString = decodeURIComponent(window.location.search);
+queryString = queryString.substring(1);
+var queries = queryString.split("&");
+var no=queries[0];
+
+function allProduct()
+{
+    window.location.href="buyerMain.html?"+no;
+}
+function myCart()
+{
+    window.location.href="myCart.html?"+no;
+}
+function myOrders()
+{
+    window.location.href="myOrders.html?"+no;
+}
+function logOut()
+{
+    window.location.href="index.html";
+}
+function load()
+{
+document.getElementById('my_cart').style.backgroundColor='rgb(199, 66, 66)';
+}
+function placeOrder()
+{
+    firebase.database().ref("Cart List/"+no).once("value").then(function (snapshot)
+               {
+                snapshot.forEach((element) => {
+                var d=new Date();
+                var date=d.getDate()+" "+d.getMonth()+","+d.getFullYear();
+                var time=d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
+                var key=date+time;
+                var name=document.getElementById('buy_name').value;
+                var address=document.getElementById('buy_address').value;
+                var city=document.getElementById('buy_city').value;
+                var pincode=document.getElementById('buy_pincode').value;
+                var mobile=document.getElementById('buy_mobile').value;
+                    var admin=element.child('admin').val();
+                    var pid=element.child('pid').val();
+                    var pname=element.child('pname').val();
+                    var price=element.child('price').val();
+                    firebase.database().ref("Orders/"+key).set(
+               {
+                   pid:pid,
+                   state:"NOT SHIPPED",
+                   name:name,
+                   address:address,
+                   city:city,
+                   date:date,
+                   time:time,
+                   orderId:key,
+                   phone:mobile,
+                   price:price,
+                   pname:pname,
+                   quantity:"1"
+                   
+               });
+                    firebase.database().ref("MyOrders/"+no+"/"+key).set(
+               {
+                   pid:pid,
+                   orderId:key
+               });
+               firebase.database().ref("AdminOrders/"+admin+"/"+key).set(
+               {
+                   pid:pid,
+                   user:no,
+                   orderId:key
+               });
+                });
+                firebase.database().ref("Cart List/"+no).remove();
+               alert("Your Order Placed");
+               });
+               
+}
+
+    </script>
+    <h1 id="seller_heading1">E-Commerce</h1>
+    <div id="seller_div1">
+        <div id="all_products" class="buyer_menu" onclick="allProduct()"> All Product</div>
+        <div id="my_cart" class="buyer_menu" onclick="myCart()"> My Cart</div>
+        <div id="my_orders" class="buyer_menu" onclick="myOrders()"> My Orders</div>
+        <div id="logout" class="buyer_menu" onclick="logOut()">LogOut</div>
+    </div>
+    <div id="seller_div">
+        
+        <div id="myproducts_div2">
+            <div id="buy">
+            <input id="buy_name" class="buy_details" placeholder="Name">
+            <input id="buy_address" class="buy_details" placeholder="Address">
+            <input id="buy_city" class="buy_details" placeholder="City">
+            <input id="buy_pincode" class="buy_details" placeholder="Pincode">
+            <input id="buy_mobile" class="buy_details" placeholder="Mobile">
+            <br>
+            <button id="place_order" onclick="placeOrder()">Place Order</button>
+        </div>
+        </div>
+    </div>
+</body>
+</html>

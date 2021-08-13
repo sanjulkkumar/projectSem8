@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<head>
+    <title>Address Details</title>
+    <link rel="stylesheet" href="Style/addDetails.css">
+</head>
+<body onload="load()">
+    <script src="https://www.gstatic.com/firebasejs/3.1.0/firebase.js"></script>
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+          apiKey: "AIzaSyDix4ZivfhjsOqJhCrAWnMof_srg8VRk5U",
+          authDomain: "ecommerce-c8c57.firebaseapp.com",
+          databaseURL: "https://ecommerce-c8c57.firebaseio.com",
+          projectId: "ecommerce-c8c57",
+          storageBucket: "ecommerce-c8c57.appspot.com",
+          messagingSenderId: "193435853562",
+          appId: "1:193435853562:web:5b471e8de42e33ec485f43"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+      </script>
+    <script>
+        var queryString = decodeURIComponent(window.location.search);
+queryString = queryString.substring(1);
+var queries = queryString.split("&");
+var no=queries[0];
+var orderId=queries[1];
+function newProduct()
+{
+    window.location.href="sellerMain.html?"+no;
+}
+function myProduct()
+{
+    window.location.href="myProducts.html?"+no;
+}
+function logOut()
+{
+    window.location.href="index.html";
+}
+function checkOrders()
+{
+   window.location.href="checkOrders.html?"+no;
+}
+function load()
+{
+document.getElementById('check_new_orders').style.backgroundColor='rgb(199, 66, 66)';
+}
+function shipped()
+{
+    firebase.database().ref("Orders/"+orderId+"/state").set("shipped");
+    window.location.href="addDetails.html?"+no+"&"+orderId;
+}
+
+
+                firebase.database().ref("Orders/"+orderId).once("value").then(function (snapshot3)
+               {
+                   var key=snapshot3.child('orderId').val();
+                   var status=snapshot3.child('state').val();
+                   var address=snapshot3.child('address').val();
+                   var city=snapshot3.child('city').val();
+                   var mobile=snapshot3.child('phone').val();
+                   document.getElementById('address').innerHTML="Address : "+address;
+                   document.getElementById('city').innerHTML="City : "+city;
+                   document.getElementById('mobile').innerHTML="Mobile : "+mobile;
+                   document.getElementById('status').innerHTML="Status : "+status;
+                    
+                });
+              
+    </script>
+    <h1 id="seller_heading1">E-Commerce</h1>
+    <div id="seller_div1">
+        <div id="add_new_product" class="seller_menu" onclick="newProduct()"> Add New Product</div>
+        <div id="my_products" class="seller_menu" onclick="myProduct()"> My Products</div>
+        <div id="check_new_orders" class="seller_menu" onclick="checkOrders()"> Check New Orders</div>
+        <div id="logout" class="seller_menu" onclick="logOut()">LogOut</div>
+    </div>
+    <div id="seller_div">
+        
+        <div id="myproducts_div2">
+            <div id="address_details">
+            <div id="address"> Address : </div>
+            <div id="city"> City : </div>
+            <div id="mobile">Mobile : </div>
+            <div id="status">Status : </div>
+            <div id="shipped_button" onclick="shipped()"> Order Shipped</div>
+            </div> 
+        </div>
+    </div>
+</body>
+</html>

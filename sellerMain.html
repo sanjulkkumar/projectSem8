@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<head>
+    <title>Add New Product</title>
+    <link rel="stylesheet" href="Style/sellerMain.css">
+</head>
+<body onload="load()">
+    <script>
+        var queryString = decodeURIComponent(window.location.search);
+queryString = queryString.substring(1);
+var queries = queryString.split("&");
+var no=queries[0];
+function load()
+{
+document.getElementById('add_new_product').style.backgroundColor='rgb(199, 66, 66)';
+}
+function category1()
+{
+    window.location.href="newProduct.html?"+no+"&Books";
+}
+function category2()
+{
+    window.location.href="newProduct.html?"+no+"&Female Dresses";
+}
+function category3()
+{
+    window.location.href="newProduct.html?"+no+"&Glasses";
+}
+function category4()
+{
+    window.location.href="newProduct.html?"+no+"&Hats";
+}
+function category5()
+{
+    window.location.href="newProduct.html?"+no+"&Headphones";
+}
+function category6()
+{
+    window.location.href="newProduct.html?"+no+"&Laptops";
+}
+function category7()
+{
+    window.location.href="newProduct.html?"+no+"&Purse Bags";
+}
+function category8()
+{
+    window.location.href="newProduct.html?"+no+"&Shoes";
+}
+function category9()
+{
+    window.location.href="newProduct.html?"+no+"&Sports";
+}
+function category10()
+{
+    window.location.href="newProduct.html?"+no+"&Sweathers";
+}
+function category11()
+{
+    window.location.href="newProduct.html?"+no+"&Tshirts";
+}
+function category12()
+{
+    window.location.href="newProduct.html?"+no+"&Watches";
+}
+function newProduct()
+{
+   // window.location.href="sellerMain.html?"+no;
+    document.getElementById('add_new_product').style.backgroundColor='rgb(199, 66, 66)';
+}
+function myProduct()
+{
+    window.location.href="myProducts.html?"+no;
+}
+function checkOrders()
+{
+    window.location.href="checkOrders.html?"+no;
+}
+function logOut()
+{
+    window.location.href="index.html";
+}
+    </script>
+    <h1 id="seller_heading1">E-Commerce</h1>
+    <div id="seller_div1">
+        <div id="add_new_product" class="seller_menu" onclick="newProduct()"> Add New Product</div>
+        <div id="my_products" class="seller_menu" onclick="myProduct()"> My Products</div>
+        <div id="check_new_orders" class="seller_menu" onclick="checkOrders()"> Check New Orders</div>
+        <div id="logout" class="seller_menu" onclick="logOut()">LogOut</div>
+    </div>
+    <div id="seller_div">
+        
+        <div id="seller_div2">
+            <h2 id="seller_heading2">Select Category</h2>
+            <div id="seller_category">
+                <div id="seller_category1" class="seller_category" onclick="category1()">
+                    <img class="seller_image" src="images/books.png" height="100px" width="100%">
+                    <br>
+                    <div class="seller_text">Books</div>
+                </div>
+                <div id="seller_category2" class="seller_category" onclick="category2()">
+                    <img class="seller_image" src="images/female_dresses.png" height="100px" width="100%">
+                    <br>
+                    <div class="seller_text">Female Dresses</div>
+                </div>
+                <div id="seller_category3" class="seller_category" onclick="category3()">
+                    <img class="seller_image" src="images/glasses.png" height="100px" width="100%">
+                    <br>
+                    <div class="seller_text">Glasses</div>
+                </div>
+                <div id="seller_category4" class="seller_category" onclick="category4()">
+                    <img class="seller_image" src="images/hats.png" height="100px" width="100%">
+                    <br>
+                    <div class="seller_text">Hats</div>
+                </div>
+                <div id="seller_category5" class="seller_category" onclick="category5()">
+                    <img class="seller_image" src="images/headphoness.png" height="100px" width="100%">
+                    <br>
+                    <div class="seller_text">Headphones</div>
+                </div>
+                
+                <div id="seller_category6" class="seller_category" onclick="category6()">
+                    <img class="seller_image" src="images/laptops.png" height="100px" width="100%">
+                    <br>
+                    <div class="seller_text">Laptops</div>
+                </div>
+                <div id="seller_category7" class="seller_category" onclick="category7()">
+                    <img class="seller_image" src="images/purses_bags.png" height="100px" width="100%">
+                    <br>
+                    <div class="seller_text">Purse Bags</div>
+                </div>
+                <div id="seller_category8" class="seller_category" onclick="category8()">
+                    <img class="seller_image" src="images/shoess.png" height="100px" width="100%">
+                    <br>
+                    <div class="seller_text">Shoes</div>
+                </div>
+                
+                <div id="seller_category9" class="seller_category" onclick="category9()">
+                    <img class="seller_image" src="images/sports.png" height="100px" width="100%">
+                    <br>
+                    <div class="seller_text">Sports</div>
+                </div>
+                
+                <div id="seller_category10" class="seller_category" onclick="category10()">
+                    <img class="seller_image" src="images/sweather.png" height="100px" width="100%">
+                    <br>
+                    <div class="seller_text">Sweather</div>
+                </div>
+                <div id="seller_category11" class="seller_category" onclick="category11()">
+                    <img class="seller_image" src="images/tshirts.png" height="100px" width="100%">
+                    <br>
+                    <div class="seller_text">Tshirts</div>
+                </div>
+                <div id="seller_category12" class="seller_category" onclick="category12()"> 
+                    <img class="seller_image" src="images/watches.png" height="100px" width="100%">
+                    <br>
+                    <div class="seller_text">Watches</div>
+                </div> 
+                <div id="gap"><5465/div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

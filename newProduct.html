@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<head>
+    <title>Add New Product</title>
+    <link rel="stylesheet" href="Style/newProduct.css">
+</head>
+<body onload="load()">
+    <script src="https://www.gstatic.com/firebasejs/3.1.0/firebase.js"></script>
+        <script>
+            // Your web app's Firebase configuration
+            var firebaseConfig = {
+              apiKey: "AIzaSyDix4ZivfhjsOqJhCrAWnMof_srg8VRk5U",
+              authDomain: "ecommerce-c8c57.firebaseapp.com",
+              databaseURL: "https://ecommerce-c8c57.firebaseio.com",
+              projectId: "ecommerce-c8c57",
+              storageBucket: "ecommerce-c8c57.appspot.com",
+              messagingSenderId: "193435853562",
+              appId: "1:193435853562:web:5b471e8de42e33ec485f43"
+            };
+            // Initialize Firebase
+            firebase.initializeApp(firebaseConfig);
+
+            var imgName, imgUrl;
+            var files=[];
+            var reader;
+            var queryString = decodeURIComponent(window.location.search);
+                 queryString = queryString.substring(1);
+                 var queries = queryString.split("&");
+                 var mobile=queries[0];
+                 var category=queries[1];
+                 function load()
+{
+document.getElementById('add_new_product').style.backgroundColor='rgb(199, 66, 66)';
+}
+            function select()
+            {
+              var input=document.createElement('input');
+              
+              input.type='file';
+              input.onchange = e => {
+                  files=e.target.files;
+                  reader=new FileReader();
+                  reader.onload=function(){
+                      document.getElementById('upload_image').src=reader.result;
+                  }
+                  reader.readAsDataURL(files[0]);
+              }
+              input.click();
+            
+            }
+            var d=new Date();
+                var date=d.getDate()+" "+d.getMonth()+","+d.getFullYear();
+                var time=d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
+                var key=date+time;
+                var kk;
+                function upload()
+                {
+                    kk=d.getTime();
+                    var uploadTask=firebase.storage().ref('Product Images/'+kk+'.png').put(files[0]);
+                    document.getElementById('product_submit').disabled=false;
+                    alert("Image successfully uploaded ")
+                }
+            
+            function submit()
+            {
+                var name=document.getElementById('product_name').value;
+                var desc=document.getElementById('product_desc').value;
+                var price=document.getElementById('product_price').value;
+                 
+                
+                firebase.storage().ref('Product Images/'+kk+'.png').getDownloadURL().then(function(url)
+                {
+                    firebase.database().ref("Products/"+key).set(
+               {
+                   Admin:mobile,
+                   category:category,
+                   date:date,
+                   description:desc,
+                   image:url,
+                   pid:key,
+                   pname:name,
+                   price:price,
+                   time:time
+               });
+               firebase.database().ref("MyProducts/"+mobile+"/"+key).set(
+               {
+                pid:key
+            });
+                });
+                document.getElementById('product_name').value="";
+                document.getElementById('product_desc').value="";
+                document.getElementById('product_price').value="";
+                alert("Product successfully added");
+            }
+            
+            function newProduct()
+{
+    window.location.href="sellerMain.html?"+mobile;
+}
+function myProduct()
+{
+    window.location.href="myProducts.html?"+mobile;
+}
+function logOut()
+{
+    window.location.href="index.html";
+}
+          </script>
+    <h1 id="seller_heading1">E-Commerce</h1>
+    <div id="seller_div1">
+        <div id="add_new_product" class="seller_menu" onclick="newProduct()"> Add New Product</div>
+        <div id="my_products" class="seller_menu" onclick="myProduct()"> My Products</div>
+        <div id="check_new_orders" class="seller_menu" onclick="checkOrders()"> Check New Orders</div>
+        <div id="logout" class="seller_menu" onclick="logOut()">LogOut</div>
+    </div>
+    <div id="seller_div">
+        
+        <div id="seller_div2">
+            <h2 id="hd">Add new Product</h2>
+            <div id="upload_part">
+                <img id="upload_image" src="images/empty.png" width="90%" height="300px">
+                <br>
+                <br>
+                <button id="select" onclick="select()">Select</button>
+                <button id="upload" onclick="upload()">Upload</button>
+            </div>
+            <div id="details_part">
+                <input id="product_name" class="details_input" placeholder="Product Name">
+                <input id="product_desc" class="details_input" placeholder="Description">
+                <input id="product_price" class="details_input" placeholder=" Enter Price in digits only">
+                <button id="product_submit" onclick="submit()" disabled>Submit</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

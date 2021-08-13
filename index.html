@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<head>
+    <title>E-Commerce Website</title>
+    <link rel="stylesheet" href="Style/index.css">
+</head>
+<body>
+
+
+    <script src="https://www.gstatic.com/firebasejs/3.1.0/firebase.js"></script>
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+          apiKey: "AIzaSyDix4ZivfhjsOqJhCrAWnMof_srg8VRk5U",
+          authDomain: "ecommerce-c8c57.firebaseapp.com",
+          databaseURL: "https://ecommerce-c8c57.firebaseio.com",
+          projectId: "ecommerce-c8c57",
+          storageBucket: "ecommerce-c8c57.appspot.com",
+          messagingSenderId: "193435853562",
+          appId: "1:193435853562:web:5b471e8de42e33ec485f43"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+      </script>
+    <script>
+        var type="Users";
+        function buyer()
+        {
+            type="Users";
+            document.getElementById("buyer2").style.background="brown";
+            document.getElementById("seller2").style.background="blue";
+        }
+        function seller()
+        {
+            type="Admin";
+            document.getElementById("buyer2").style.background="blue";
+            document.getElementById("seller2").style.background="brown";
+        }
+        function login()
+        {
+            var no=document.getElementById("number").value;
+            var pass=document.getElementById("password").value;
+            if(no===""||pass==="")
+            {
+                alert("Please fill details first");
+            }
+            else{
+                firebase.database().ref(type+"/"+no+"/password").once("value").then(function (snapshot)
+               {
+                   if(snapshot.exists())
+                   {
+                     var ps=snapshot.val();
+                     if(ps===pass)
+                     {
+                         if(type==="Admin")
+                         window.location.href="sellerMain.html?"+no;
+                         else
+                         window.location.href="buyerMain.html?"+no;
+                     }
+                     else
+                     {
+                         alert("Please enter correct password")
+                     }
+                   }
+                   else
+                   {
+                    alert("Mobile number doesn't exists");
+                   }
+               });
+            }
+        }
+    </script>
+
+
+
+    <div id="background">
+        <div id="div1">
+            <div id="div11">
+            <img id="home_image" src="images/home.jpg">
+            <!-- <h1 id="heading1">E-COMMERCE</h1>
+            <h3 id="heading2">An Online Shopping Website</h3> -->
+             </div>
+        </div>
+        <div id="div2">
+            <div id="login_form">
+            <input id="number" class="login" type="number" placeholder="Mobile Number">
+            <input id="password" class="login" type="password" placeholder="Password">
+            <div id="account2">
+                <span id="buyer2" class="account2" onclick="buyer()">Buyer  </span>
+                <span id="seller2" class="account2" onclick="seller()">Seller</span>
+            </div>
+            <button id="login_button" onclick="login()">LOGIN</button>
+            </div>
+            <a id="new_account" href="signin.html">Create New Account</a>
+        </div>
+    </div>
+
+    
+</body>
+</html>

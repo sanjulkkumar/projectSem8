@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+    <head>
+        <title>Create New Account</title>
+        <link rel="stylesheet" href="Style/signin.css">
+    </head>
+    <body>
+
+
+        <script src="https://www.gstatic.com/firebasejs/3.1.0/firebase.js"></script>
+        <script>
+            // Your web app's Firebase configuration
+            var firebaseConfig = {
+              apiKey: "AIzaSyDix4ZivfhjsOqJhCrAWnMof_srg8VRk5U",
+              authDomain: "ecommerce-c8c57.firebaseapp.com",
+              databaseURL: "https://ecommerce-c8c57.firebaseio.com",
+              projectId: "ecommerce-c8c57",
+              storageBucket: "ecommerce-c8c57.appspot.com",
+              messagingSenderId: "193435853562",
+              appId: "1:193435853562:web:5b471e8de42e33ec485f43"
+            };
+            // Initialize Firebase
+            firebase.initializeApp(firebaseConfig);
+          </script>
+        <script>
+            var type="Users";
+            function buyer()
+            {
+                type="Users";
+                document.getElementById("buyer").style.background="brown";
+                document.getElementById("seller").style.background="blue";
+            }
+            function seller()
+            {
+                type="Admin";
+                document.getElementById("buyer").style.background="blue";
+                document.getElementById("seller").style.background="brown";
+            }
+            function submit()
+            {
+                
+                var name=document.getElementById("name").value;
+                var no=document.getElementById("number").value;
+                var pass=document.getElementById("password").value;
+                var size=no.toString().length;
+                if(name===""||no===""||pass==="")
+                {
+                    alert("Please fill details first");
+                }
+                else if(size!=10)
+                {
+                    alert("Please write the correct mobile number");
+                }
+                else{
+                    firebase.database().ref(type+"/"+no).once("value").then(function (snapshot)
+                   {
+                       if(snapshot.exists())
+                       {
+                        alert("Mobile number already exists. Please use another mobile number."); 
+                       }
+                       else
+                       {
+                        firebase.database().ref(type+"/"+no).set(
+                        {
+                       name:name,
+                       mobile:no,
+                       password:pass
+                        });
+                        window.location.href="index.html";
+                       }
+                   });
+                }
+            }
+        </script>
+
+
+
+        <div id="signin_background">
+            <div id="account">
+                <span id="buyer" class="account" onclick="buyer()">Buyer  </span>
+                <span id="seller" class="account" onclick="seller()">Seller</span>
+            </div>
+           <div id="signin_form">
+            <input id="name" class="signin" type="text" placeholder="Name">
+            <input id="number" class="signin" type="number" placeholder="Mobile Number">
+            <input id="password" class="signin" type="password" placeholder="Password">
+            <input id="email" class="signin" type="email" placeholder="Email">
+            <button id="submit" onclick="submit()">SUBMIT</button>
+           </div>
+        </div>
+
+        
+    </body>
+</html>
